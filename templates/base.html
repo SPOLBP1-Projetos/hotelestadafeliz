@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Estada Feliz - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        // Função para aplicar o tema do cookie ao carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            const theme = document.cookie.split(';').find(item => item.trim().startsWith('theme='));
+            const themeValue = theme ? theme.split('=')[1] : 'light';
+            document.body.className = themeValue;
+        });
+    </script>
+</head>
+<body class="{{ theme }}">
+    <header>
+        <div class="container">
+            <h1>Hotel Estada Feliz</h1>
+            <nav>
+                {% if session.get('logged_in') %}
+                    <div class="auth-nav">
+                        <a href="{{ url_for('home') }}">Início</a>
+                        {% if session.get('profile_id') in [1, 2] %}
+                        <a href="{{ url_for('reservar') }}">Reservas</a>
+                        {% endif %}
+                        <div class="theme-switcher">
+                            <a href="{{ url_for('set_theme', theme='light') }}">Claro</a>
+                            <a href="{{ url_for('set_theme', theme='dark') }}">Escuro</a>
+                        </div>
+                        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-small">Sair ({{ session.get('user_profile') }})</a>
+                    </div>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

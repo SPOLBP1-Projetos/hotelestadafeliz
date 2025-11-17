@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Gestão de Reservas{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px;">Gerenciamento de Reservas</h2>
+
+<div class="card">
+    <h3>1. Pesquisar Disponibilidade</h3>
+    <p style="margin-bottom: 15px; font-size: 0.9em;">Selecione as datas para ver quais quartos estão livres.</p>
+    <form method="GET" action="{{ url_for('reservar') }}" style="display: flex; gap: 20px; align-items: flex-end;">
+        <div class="form-group" style="flex: 1;">
+            <label for="checkin_search">Check-in</label>
+            <input type="date" id="checkin_search" name="checkin" value="{{ search_checkin }}" required>
+        </div>
+        <div class="form-group" style="flex: 1;">
+            <label for="checkout_search">Check-out</label>
+            <input type="date" id="checkout_search" name="checkout" value="{{ search_checkout }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="flex: 0 0 auto;">Buscar Quartos</button>
+    </form>
+</div>
+
+{% if quartos_disponiveis %}
+<div class="card" style="border: 2px solid var(--color-secondary);">
+    <h3>2. Fazer Nova Reserva</h3>
+    <p>Quartos disponíveis para o período de **{{ search_checkin }}** a **{{ search_checkout }}**.</p>
+    <form method="POST" action="{{ url_for('reservar') }}" style="margin-top: 20px;">
+        <input type="hidden" name="data_checkin" value="{{ search_checkin }}">
+        <input type="hidden" name="data_checkout" value="{{ search_checkout }}">
+
+        <div class="form-group">
+            <label for="numero_quarto">Quarto Disponível</label>
+            <select id="numero_quarto" name="numero_quarto" required>
+                {% for quarto in quartos_disponiveis %}
+                    <option value="{{ quarto.numero_quarto }}">
+                        Quarto {{ quarto.numero_quarto }} (Cap: {{ quarto.capacidade_maxima }}, R$ {{ quarto.preco_diaria_base|round(2) }}/diária)
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="nome_hospede">Nome do Hóspede Principal</label>
+            <input type="text" id="nome_hospede" name="nome_hospede" required placeholder="Nome completo do hóspede">
+        </div>
+        <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+    </form>
+</div>
+{% elif search_checkin != default_checkin or search_checkout != default_checkout %}
+<div class="flash danger">Nenhum quarto disponível para o período selecionado ou as datas estão incorretas.</div>
+{% endif %}
+
+
+<h3>3. Todas as Reservas Atuais</h3>
+<div class="card table-responsive">
+    {% if reservas %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Quarto</th>
+                <th>Hóspede</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Valor Total</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in reservas %}
+            <tr>
+                <td>{{ reserva.id_reserva }}</td>
+                <td>{{ reserva.numero_quarto }}</td>
+                <td>{{ reserva.nome_hospede }}</td>
+                <td>{{ reserva.data_checkin }}</td>
+                <td>{{ reserva.data_checkout }}</td>
+                <td>R$ {{ reserva.valor_total|round(2) }}</td>
+                <td>
+                    <span style="font-weight: 600; color: {% if reserva.status_reserva == 'Confirmada' %}var(--color-secondary){% elif reserva.status_reserva == 'Cancelada' %}var(--color-danger){% else %}#f39c12{% endif %};">
+                        {{ reserva.status_reserva }}
+                    </span>
+                </td>                
+                    <form method="POST" action="{{ url_for('deletar_reserva', reserva_id=reserva.id_reserva) }}" onsubmit="return confirm('Tem certeza que deseja DELETAR a reserva #{{ reserva.id_reserva }}? Esta ação não pode ser desfeita.');">
+                        <!-- A exclusão é simplificada para fins do projeto. Em um sistema real, seria um "Cancelar" que atualizaria o status. -->
+                        <button type="submit" class="btn btn-danger btn-small">DELETAR</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhuma reserva encontrada.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

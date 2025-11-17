@@ -1,0 +1,273 @@
+/* Google Font - Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --color-primary: #6f6a34; /* Azul Vívido */
+    --color-secondary: #33e93f; /* Verde */
+    --color-danger: #3e572d; /* Vermelho */
+    --color-text-dark: #2c3e50;
+    --color-text-light: #ecf0f1;
+    --color-bg-light: #f4f7f6;
+    --color-bg-dark: #34495e;
+    --color-card-light: #ffffff;
+    --color-card-dark: #2c3e50;
+    --color-border: #bdc3c7;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh;
+    color: var(--color-text-dark);
+}
+
+/* --- Temas (Baseado no Cookie) --- */
+body.light {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-dark);
+}
+
+body.dark {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+}
+body.dark .card, body.dark .table, body.dark input[type="text"], 
+body.dark input[type="email"], body.dark input[type="password"], 
+body.dark input[type="date"], body.dark select, body.dark textarea {
+    background-color: var(--color-card-dark);
+    color: var(--color-text-light);
+    border-color: #5d6d7e;
+}
+
+body.dark .flash.success { background-color: #27ae60; }
+body.dark .flash.danger { background-color: #c0392b; }
+body.dark .flash.warning { background-color: #f39c12; }
+
+
+/* --- Layout Comum --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 1.8em;
+    display: inline-block;
+}
+
+nav {
+    float: right;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.auth-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.theme-switcher {
+    margin-left: 20px;
+}
+
+.theme-switcher a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 5px 10px;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+
+/* --- Formulários e Cards --- */
+.card {
+    background-color: var(--color-card-light);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+input[type="date"], 
+select, 
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.btn-small {
+    padding: 5px 10px;
+    font-size: 0.85em;
+    border-radius: 5px;
+}
+
+
+/* --- Mensagens Flash --- */
+.flash {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.flash.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flash.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+
+/* --- Tabelas --- */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: var(--color-card-light);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.table th {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    opacity: 0.95;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* --- Layout Login --- */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-form h2 {
+    margin-bottom: 25px;
+    font-weight: 700;
+}
