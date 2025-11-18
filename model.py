@@ -79,11 +79,11 @@ def init_db():
 
     # Inserir Usuário Camareira (Senha: 'camareira123')
     camareira_hash = hash_password('camareira123')
-    camareira_user = ('Camareira', 'camareira@hotel.com', camareira_hash, 4)
+    camareira_user = ('Camareira', 'camareira@hotel.com', camareira_hash, 3)
 
     # Inserir Usuário Recepcionista (Senha: 'recepcionista123')
     recepcionista_hash = hash_password('recepcionista123')
-    recepcionista_user = ('Recepcionista', 'recepcionista@hotel.com', recepcionista_hash, 4)
+    recepcionista_user = ('Recepcionista', 'recepcionista@hotel.com', recepcionista_hash, 2)
 
     try:
         cursor.execute("INSERT INTO usuarios (nome_completo, email, senha_hash, perfil_id) VALUES (?, ?, ?, ?)", admin_user)
@@ -233,6 +233,36 @@ def get_room_price(numero_quarto):
     price = cursor.fetchone()
     conn.close()
     return price[0] if price else None
+
+def get_all_quartos():
+    """Retorna todos os quartos com seus status."""
+    conn = sqlite3.connect(DATABASE_NAME)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM quartos ORDER BY numero_quarto ASC")
+    quartos = cursor.fetchall()
+    conn.close()
+    return [dict(quarto) for quarto in quartos]
+
+def update_quarto_status(numero_quarto, novo_status):
+    """Atualiza o status de limpeza de um quarto."""
+    conn = sqlite3.connect(DATABASE_NAME)
+    cursor = conn.cursor()
+    cursor.execute("UPDATE quartos SET status_limpeza = ? WHERE numero_quarto = ?", (novo_status, numero_quarto))
+    conn.commit()
+    rows_updated = cursor.rowcount
+    conn.close()
+    return rows_updated > 0
+
+def get_reservas_by_hospede(nome_hospede):
+    """Retorna todas as reservas de um hóspede específico."""
+    conn = sqlite3.connect(DATABASE_NAME)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM reservas WHERE nome_hospede = ? ORDER BY data_checkin DESC", (nome_hospede,))
+    reservas = cursor.fetchall()
+    conn.close()
+    return [dict(reserva) for reserva in reservas]
 
 # Inicializa o DB na primeira execução do módulo
 init_db()

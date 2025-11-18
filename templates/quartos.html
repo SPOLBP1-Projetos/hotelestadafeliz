@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Quartos{% endblock %}
+{% block content %}
+<h2>Gerenciamento de Limpeza dos Quartos</h2> <br>
+<table>
+    <tr>
+        <th>Número</th>
+        <th>Capacidade</th>
+        <th>Preço</th>
+        <th>Status de Limpeza</th>
+        <th>Ação</th>
+    </tr>
+    {% for quarto in quartos %}
+    <tr>
+        <td>{{ quarto.numero_quarto }}</td>
+        <td>{{ quarto.capacidade_maxima }}</td>
+        <td>R$ {{ quarto.preco_diaria_base }}</td>
+        <td>{{ quarto.status_limpeza }}</td>
+        <td>
+            <form method="POST" style="display:inline;">
+                <input type="hidden" name="numero_quarto" value="{{ quarto.numero_quarto }}">
+                <select name="status_limpeza">
+                    <b><option value="Limpo">Limpo</option></b>
+                    <option value="Sujo">Sujo</option>
+                    <option value="Em limpeza">Em limpeza</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -2,6 +2,7 @@ from model import get_user_by_email, check_password, add_reserva, get_all_reserv
 from flask import session, redirect, url_for, request, flash, make_response
 from functools import wraps
 from datetime import datetime, timedelta
+from model import get_all_quartos, update_quarto_status, get_reservas_by_hospede
 
 # Dicionário de Perfis para facilitar a Autorização
 PERFIS = {
@@ -145,3 +146,19 @@ def set_theme_cookie(response, theme):
 def get_theme_from_cookie(request):
     """Obtém a preferência de tema do cookie."""
     return request.cookies.get('theme', 'light') # 'light' é o padrão
+
+def get_quartos_data():
+    """Obtém todos os quartos para exibição da camareira."""
+    return get_all_quartos()
+
+def handle_update_quarto_status(numero_quarto, novo_status):
+    """Atualiza status de limpeza de um quarto."""
+    success = update_quarto_status(numero_quarto, novo_status)
+    if success:
+        return True, "Status atualizado com sucesso!"
+    else:
+        return False, "Erro ao atualizar status do quarto."
+
+def get_reservas_hospede(nome_hospede):
+    """Obtém reservas de um hóspede específico."""
+    return get_reservas_by_hospede(nome_hospede)

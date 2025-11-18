@@ -24,7 +24,7 @@
 {% if quartos_disponiveis %}
 <div class="card" style="border: 2px solid var(--color-secondary);">
     <h3>2. Fazer Nova Reserva</h3>
-    <p>Quartos disponíveis para o período de **{{ search_checkin }}** a **{{ search_checkout }}**.</p>
+    <p>Quartos disponíveis para o período de <b>{{ search_checkin }}</b> a <b>{{ search_checkout }}</b>.</p>
     <form method="POST" action="{{ url_for('reservar') }}" style="margin-top: 20px;">
         <input type="hidden" name="data_checkin" value="{{ search_checkin }}">
         <input type="hidden" name="data_checkout" value="{{ search_checkout }}">

@@ -5,14 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Estada Feliz - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script>
-        // Função para aplicar o tema do cookie ao carregar
-        document.addEventListener('DOMContentLoaded', () => {
-            const theme = document.cookie.split(';').find(item => item.trim().startsWith('theme='));
-            const themeValue = theme ? theme.split('=')[1] : 'light';
-            document.body.className = themeValue;
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 <body class="{{ theme }}">
     <header>

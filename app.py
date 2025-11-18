@@ -10,7 +10,10 @@ from controller import (
     handle_delete_reservation,
     set_theme_cookie,
     get_theme_from_cookie,
-    handle_room_availability
+    handle_room_availability,
+    get_reservas_hospede,
+    get_quartos_data,
+    handle_update_quarto_status
 )
 from datetime import datetime,timedelta
 
@@ -138,7 +141,31 @@ def set_theme(theme):
     response = redirect(request.referrer or url_for('home'))
     return set_theme_cookie(response, theme)
 
+# --- Rotas da Camareira ---
+@app.route('/quartos', methods=['GET', 'POST'])
+@login_required
+@profile_required(allowed_profiles=[3])  # Apenas Camareira
+def quartos():
+    if request.method == 'POST':
+        numero_quarto = request.form['numero_quarto']
+        novo_status = request.form['status_limpeza']
+        success, message = handle_update_quarto_status(numero_quarto, novo_status)
+        flash(message, 'success' if success else 'danger')
+        return redirect(url_for('quartos'))
+
+    quartos = get_quartos_data()
+    return render_template('quartos.html', quartos=quartos, theme=get_theme_from_cookie(request))
+
+
+# --- Rotas do Hóspede ---
+@app.route('/minhas_reservas')
+@login_required
+@profile_required(allowed_profiles=[4])  # Apenas Hóspede
+def minhas_reservas():
+    nome_hospede = session.get('user_name')
+    reservas = get_reservas_hospede(nome_hospede)
+    return render_template('minhas_reservas.html', reservas=reservas, theme=get_theme_from_cookie(request))
 
 # --- Rodar o App ---
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5006)

@@ -30,14 +30,13 @@
         <div style="margin-top: 20px;">
             <h3>Lista de Quartos (Camareira)</h3>
             <p>Sua única função é atualizar o status de limpeza dos quartos.</p>
-            <!-- Aqui entraria a lista de quartos e status, se implementada -->
-            <p style="color: #999;">Funcionalidade de status de limpeza pendente de implementação.</p>
+            <p><a href="{{ url_for('quartos') }}" class="btn btn-primary">Gerenciar Limpeza</a></p>
         </div>
     {% elif user_profile == 'Hóspede' %}
         <div style="margin-top: 20px;">
             <h3>Painel Pessoal do Hóspede</h3>
             <p>Aqui você pode ver suas reservas, histórico e faturas.</p>
-            <p style="color: #999;">Funcionalidades de reserva pessoal e faturas pendentes de implementação.</p>
+            <p><a href="{{ url_for('minhas_reservas') }}" class="btn btn-primary">Minhas Reservas</a></p>
         </div>
     {% endif %}
     
