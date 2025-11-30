@@ -64,12 +64,13 @@
                 <th>Check-out</th>
                 <th>Valor Total</th>
                 <th>Status</th>
-                <th>Ações</th>
+                <th>Ações</th> 
             </tr>
         </thead>
         <tbody>
             {% for reserva in reservas %}
             <tr>
+                
                 <td>{{ reserva.id_reserva }}</td>
                 <td>{{ reserva.numero_quarto }}</td>
                 <td>{{ reserva.nome_hospede }}</td>
@@ -78,14 +79,17 @@
                 <td>R$ {{ reserva.valor_total|round(2) }}</td>
                 <td>
                     <span style="font-weight: 600; color: {% if reserva.status_reserva == 'Confirmada' %}var(--color-secondary){% elif reserva.status_reserva == 'Cancelada' %}var(--color-danger){% else %}#f39c12{% endif %};">
-                        {{ reserva.status_reserva }}
+                    {{ reserva.status_reserva }}
                     </span>
-                </td>                
-                    <form method="POST" action="{{ url_for('deletar_reserva', reserva_id=reserva.id_reserva) }}" onsubmit="return confirm('Tem certeza que deseja DELETAR a reserva #{{ reserva.id_reserva }}? Esta ação não pode ser desfeita.');">
-                        <!-- A exclusão é simplificada para fins do projeto. Em um sistema real, seria um "Cancelar" que atualizaria o status. -->
+                </td>
+
+                <td>
+                    <form method="POST" action="{{ url_for('deletar_reserva', reserva_id=reserva.id_reserva) }}"
+                        onsubmit="return confirm('Tem certeza que deseja DELETAR a reserva #{{ reserva.id_reserva }}? Esta ação não pode ser desfeita.');">
                         <button type="submit" class="btn btn-danger btn-small">DELETAR</button>
                     </form>
                 </td>
+
             </tr>
             {% endfor %}
         </tbody>
